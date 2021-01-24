@@ -154,7 +154,7 @@ k3 = modevec(mu)
                 @test reldiff < 1e-14            
             end
 
-            @testset "3D3" begin
+            @testset "2D3" begin
                 # 2D3
                 out = complex(zeros(nk))
                 ref = complex(zeros(nk))
@@ -244,19 +244,19 @@ k3 = modevec(mu)
                 ref = complex(zeros(Float32, ms))
                 for j=1:nj
                     for ss=1:ms
-                        ref[ss] += c[j] * exp(1im*k1[ss]*x[j])
+                        ref[ss] += cf[j] * exp(1im*k1[ss]*xf[j])
                     end
                 end
                 # Try this one with explicit opts struct
                 opts = finufft_default_opts()
                 opts.spread_kerpad = 0 # This should also work
-                nufft1d1!(x, c, 1, tolf, out, opts)
+                nufft1d1!(xf, cf, 1, tolf, out, opts)
                 relerr_1d1 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_1d1 < 1e-5
                 # Different caller
-                out2 = nufft1d1(x, c, 1, tolf, ms)
+                out2 = nufft1d1(xf, cf, 1, tolf, ms)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
-                @test reldiff < 1e-6
+                @test reldifff < 1e-6
             end
             
             # 1D2
@@ -265,13 +265,13 @@ k3 = modevec(mu)
                 ref = complex(zeros(Float32, nj))
                 for j=1:nj
                     for ss=1:ms
-                        ref[j] += F1D[ss] * exp(1im*k1[ss]*x[j])
+                        ref[j] += F1Df[ss] * exp(1im*k1[ss]*xf[j])
                     end
                 end
-                nufft1d2!(x, out, 1, tolf, F1D)
+                nufft1d2!(xf, out, 1, tolf, F1Df)
                 relerr_1d2 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_1d2 < 1e-5
-                out2 = nufft1d2(x, 1, tolf, F1D)
+                out2 = nufft1d2(xf, 1, tolf, F1Df)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6
             end
@@ -282,13 +282,13 @@ k3 = modevec(mu)
                 ref = complex(zeros(Float32, nk))
                 for k=1:nk
                     for j=1:nj
-                        ref[k] += c[j] * exp(1im*s[k]*x[j])
+                        ref[k] += cf[j] * exp(1im*sf[k]*xf[j])
                     end
                 end
-                nufft1d3!(x,c,1,tolf,s,out)
+                nufft1d3!(xf,cf,1,tolf,sf,out)
                 relerr_1d3 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_1d3 < 1e-5
-                out2 = nufft1d3(x,c,1,tolf,s)
+                out2 = nufft1d3(xf,cf,1,tolf,sf)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end
@@ -303,14 +303,14 @@ k3 = modevec(mu)
                 for j=1:nj
                     for ss=1:ms
                         for tt=1:mt
-                            ref[ss,tt] += c[j] * exp(1im*(k1[ss]*x[j]+k2[tt]*y[j]))
+                            ref[ss,tt] += cf[j] * exp(1im*(k1[ss]*xf[j]+k2[tt]*yf[j]))
                         end
                     end
                 end
-                nufft2d1!(x, y, c, 1, tolf, out)
+                nufft2d1!(xf, yf, cf, 1, tolf, out)
                 relerr_2d1 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_2d1 < 1e-5
-                out2 = nufft2d1(x, y, c, 1, tolf, ms, mt)
+                out2 = nufft2d1(xf, yf, cf, 1, tolf, ms, mt)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end
@@ -322,31 +322,31 @@ k3 = modevec(mu)
                 for j=1:nj
                     for ss=1:ms
                         for tt=1:mt
-                            ref[j] += F2D[ss, tt] * exp(1im*(k1[ss]*x[j]+k2[tt]*y[j]))
+                            ref[j] += F2Df[ss, tt] * exp(1im*(k1[ss]*xf[j]+k2[tt]*yf[j]))
                         end
                     end
                 end
-                nufft2d2!(x, y, out, 1, tolf, F2D)
+                nufft2d2!(xf, yf, out, 1, tolf, F2Df)
                 relerr_2d2 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_2d2 < 1e-5
-                out2 = nufft2d2(x, y, 1, tolf, F2D)
+                out2 = nufft2d2(xf, yf, 1, tolf, F2Df)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end
 
-            @testset "3D3" begin
+            @testset "2D3" begin
                 # 2D3
                 out = complex(zeros(Float32, nk))
                 ref = complex(zeros(Float32, nk))
                 for k=1:nk
                     for j=1:nj
-                        ref[k] += c[j] * exp(1im*(s[k]*x[j]+t[k]*y[j]))
+                        ref[k] += cf[j] * exp(1im*(sf[k]*xf[j]+tf[k]*yf[j]))
                     end
                 end
-                nufft2d3!(x,y,c,1,tolf,s,t,out)
+                nufft2d3!(xf,yf,cf,1,tolf,sf,tf,out)
                 relerr_2d3 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_2d3 < 1e-5
-                out2 = nufft2d3(x,y,c,1,tolf,s,t)
+                out2 = nufft2d3(xf,yf,cf,1,tolf,sf,tf)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end        
@@ -362,15 +362,15 @@ k3 = modevec(mu)
                     for ss=1:ms
                         for tt=1:mt
                             for uu=1:mu
-                                ref[ss,tt,uu] += c[j] * exp(1im*(k1[ss]*x[j]+k2[tt]*y[j]+k3[uu]*z[j]))
+                                ref[ss,tt,uu] += cf[j] * exp(1im*(k1[ss]*xf[j]+k2[tt]*yf[j]+k3[uu]*zf[j]))
                             end
                         end
                     end
                 end
-                nufft3d1!(x, y, z, c, 1, tolf, out)
+                nufft3d1!(xf, yf, zf, cf, 1, tolf, out)
                 relerr_3d1 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_3d1 < 1e-5
-                out2 = nufft3d1(x, y, z, c, 1, tolf, ms, mt, mu)
+                out2 = nufft3d1(xf, yf, zf, cf, 1, tolf, ms, mt, mu)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end
@@ -383,15 +383,15 @@ k3 = modevec(mu)
                     for ss=1:ms
                         for tt=1:mt
                             for uu=1:mu
-                                ref[j] += F3D[ss, tt, uu] * exp(1im*(k1[ss]*x[j]+k2[tt]*y[j]+k3[uu]*z[j]))
+                                ref[j] += F3Df[ss, tt, uu] * exp(1im*(k1[ss]*xf[j]+k2[tt]*yf[j]+k3[uu]*zf[j]))
                             end
                         end
                     end
                 end
-                nufft3d2!(x, y, z, out, 1, tolf, F3D)
+                nufft3d2!(xf, yf, zf, out, 1, tolf, F3Df)
                 relerr_3d2 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_3d2 < 1e-5
-                out2 = nufft3d2(x, y, z, 1, tolf, F3D)
+                out2 = nufft3d2(xf, yf, zf, 1, tolf, F3Df)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end
@@ -402,13 +402,13 @@ k3 = modevec(mu)
                 ref = complex(zeros(Float32, nk))
                 for k=1:nk
                     for j=1:nj
-                        ref[k] += c[j] * exp(1im*(s[k]*x[j]+t[k]*y[j]+u[k]*z[j]))
+                        ref[k] += cf[j] * exp(1im*(sf[k]*xf[j]+tf[k]*yf[j]+uf[k]*zf[j]))
                     end
                 end        
-                nufft3d3!(x,y,z,c,1,tolf,s,t,u,out)
+                nufft3d3!(xf,yf,zf,cf,1,tolf,sf,tf,uf,out)
                 relerr_3d3 = norm(vec(out)-vec(ref), Inf) / norm(vec(ref), Inf)
                 @test relerr_3d3 < 1e-5
-                out2 = nufft3d3(x,y,z,c,1,tolf,s,t,u)
+                out2 = nufft3d3(xf,yf,zf,cf,1,tolf,sf,tf,uf)
                 reldiff = norm(vec(out)-vec(out2), Inf) / norm(vec(out), Inf)
                 @test reldiff < 1e-6            
             end        
