@@ -55,7 +55,7 @@ k2 = modevec(mt)
 k3 = modevec(mu)
 
 @testset "NUFFT" begin
-    @testset "DOUBLE"
+    @testset "DOUBLE" begin
         ## 1D
         @testset "1D" begin
             # 1D1
@@ -235,7 +235,7 @@ k3 = modevec(mu)
         end
     end
 
-    @testset "SINGLE"
+    @testset "SINGLE" begin
         ## 1D
         @testset "1D" begin
             # 1D1
