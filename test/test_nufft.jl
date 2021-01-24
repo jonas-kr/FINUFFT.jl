@@ -31,7 +31,7 @@ F2D = rand(ms, mt) + 1im*rand(ms,mt)
 F3D = rand(ms, mt, mu) + 1im*rand(ms,mt, mu)
 
 ## SINGLE PRECISION
-tolf = 1e-6
+tolf = 1f-6
 
 # nonuniform data
 xf = 3f0*pi*(1 .- 2*rand(Float32, nj))
