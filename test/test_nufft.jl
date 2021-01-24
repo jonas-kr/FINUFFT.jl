@@ -34,9 +34,9 @@ F3D = rand(ms, mt, mu) + 1im*rand(ms,mt, mu)
 tolf = 1e-6
 
 # nonuniform data
-xf = 3*pi*(1 .- 2*rand(Float32, nj))
-yf = 3*pi*(1 .- 2*rand(Float32, nj))
-zf = 3*pi*(1 .- 2*rand(Float32, nj))
+xf = 3f0*pi*(1 .- 2*rand(Float32, nj))
+yf = 3f0*pi*(1 .- 2*rand(Float32, nj))
+zf = 3f0*pi*(1 .- 2*rand(Float32, nj))
 cf = rand(Float32, nj) + 1im*rand(Float32, nj)
 sf = rand(Float32, nk)
 tf = rand(Float32, nk)
